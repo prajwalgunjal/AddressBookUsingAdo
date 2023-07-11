@@ -139,6 +139,13 @@ namespace AddressBookUsingAdo
                             addressBookDBOperations.AddByStroedProcedure(contact);
                             break;
                         }
+                    case 8:
+                        {
+                            Console.WriteLine("ENter ID:-");
+                            int id = int.Parse(Console.ReadLine());
+                            addressBookDBOperations.GetContactByID(id);
+                            break;
+                        }
 
                 }
             }

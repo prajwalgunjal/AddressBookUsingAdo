@@ -351,6 +351,61 @@ namespace AddressBookUsingAdo
             }
         }
 
-        
+        public bool DisplayByIDStoredProcedure(int id)
+        {
+            try
+            {
+                List<Contact> list = new List<Contact>();
+                sqlConnection.Open();
+                string Query = "GetAllContactByID";
+                SqlCommand sqlCommand = new SqlCommand(Query, sqlConnection);
+                sqlCommand.Parameters.AddWithValue("@Id", id);
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                while (reader.Read())
+                {
+                    Contact contact = new Contact()
+                    {
+                        Id = (int)reader["Id"],
+                        FirstName = (string)reader["FirstName"],
+                        LastName = (string)reader["LastName"],
+                        PhoneNumber = (string)reader["PhoneNumber1"],
+                        PhoneNumber2 = (string)reader["PhoneNumber2"],
+                        Email = (string)reader["Email"],
+                        City = (string)reader["City"],
+                        Sstate = (string)reader["Sstate"],
+                        PinCode = (string)reader["PinCode"],
+                        Country = (string)reader["Country"]
+                    };
+                    list.Add(contact);
+                }
+                foreach (Contact contact in list)
+                {
+                    if (contact.Id == id)
+                    {
+                        Console.WriteLine($"Id: {contact.Id}\t Name:- {contact.FirstName}\t LastName:- {contact.LastName}" +
+                            $"\tPhoneNumber:- {contact.PhoneNumber}  \tAlternate PhoneNumber: - {contact.PhoneNumber2} \tEmail:- {contact.Email} \tCity:- {contact.City} \tState:- {contact.Sstate} \tPinCode:- {contact.PinCode}" +
+                            $"\tCountry:- {contact.Country}");
+                    }
+                }
+                sqlConnection.Close();
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                Console.WriteLine("Something went wrong");
+                return false;
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+        }
+
+
+
+
+
     }
 }

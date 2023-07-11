@@ -146,7 +146,15 @@ namespace AddressBookUsingAdo
                             addressBookDBOperations.GetContactByID(id);
                             break;
                         }
-
+                    case 9:
+                        {
+                            Console.WriteLine("ENter ID:- ");
+                            int id = int.Parse(Console.ReadLine());
+                            Console.WriteLine("Enter Email:- ");
+                            string email = Console.ReadLine();
+                            addressBookDBOperations.UpdateByIDStoredProcedure(id, email);
+                            break;
+                        }
                 }
             }
         }

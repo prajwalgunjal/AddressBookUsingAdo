@@ -402,6 +402,31 @@ namespace AddressBookUsingAdo
                 sqlConnection.Close();
             }
         }
+         public bool UpdateByIDStoredProcedure(int id, string Email)
+        {
+            try
+            {
+                List<Contact> list = new List<Contact>();
+                sqlConnection.Open();
+                string Query = "UpdateByID";
+                SqlCommand sqlCommand = new SqlCommand(Query, sqlConnection);
+                sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("@Id", id);
+                sqlCommand.Parameters.AddWithValue("@Email", Email);
+                int result = sqlCommand.ExecuteNonQuery();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                Console.WriteLine("Something went wrong");
+                return false;
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+        }
 
 
 

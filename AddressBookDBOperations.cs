@@ -8,6 +8,8 @@ using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
+using System.Collections;
+
 namespace AddressBookUsingAdo
 {
     public class AddressBookDBOperations
@@ -104,20 +106,83 @@ namespace AddressBookUsingAdo
             }
         }
 
-        public void Delete(int id)
+        /*public bool AddByStroedProcedure(Contact contact)
         {
-            sqlConnection.Open();
-            string query1 = $"Delete FROM PhoneNumber WHERE Id = 1";
-            string query = $"Delete FROM Contacts WHERE Id = 1";
-            SqlCommand sqlCommand = new SqlCommand(query1, sqlConnection);
-            SqlCommand sqlCommand2 = new SqlCommand(query, sqlConnection);
-            //sqlCommand.ExecuteNonQuery();
-            sqlCommand2.ExecuteNonQuery();
-
-            sqlConnection.Close();
+            try
+            {
+                sqlConnection.Open();
+                string query = "AddContact";
+                SqlTransaction sqlTransaction = sqlConnection.BeginTransaction(); /// add this to make it transactional ->1
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection, sqlTransaction); /// paas that object here    ->2
+                sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("@FirstName", contact.FirstName);
+                sqlCommand.Parameters.AddWithValue("@LastName", contact.LastName);
+                sqlCommand.Parameters.AddWithValue("@PhoneNumber1", contact.PhoneNumber);
+                sqlCommand.Parameters.AddWithValue("@Email", contact.Email);
+                sqlCommand.Parameters.AddWithValue("@City", contact.City);
+                sqlCommand.Parameters.AddWithValue("@PinCode", contact.PinCode);
+                sqlCommand.Parameters.AddWithValue("@Country", contact.Country);
+                sqlCommand.Parameters.AddWithValue("@Sstate", contact.Sstate);
+                sqlCommand.Parameters.AddWithValue("@PhoneNumber2", contact.PhoneNumber);
+                try
+                {
+                    int result = sqlCommand.ExecuteNonQuery();
+                    sqlTransaction.Commit();
+                    if (result > 0)
+                    {
+                        Console.WriteLine($"{result} number of rows affected in Contact Table");
+                        Console.WriteLine("Data added .....");
+                        return true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Something went wrong");
+                        sqlConnection.Close();
+                    }
+                }
+                catch (Exception)
+                {
+                    sqlTransaction.Rollback();
+                    Console.WriteLine("Rollback changes ");
+                }
+                return true;
+               
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
+            finally 
+            {
+                sqlConnection.Close();
+            }
         }
+*/
 
-
+        public bool Delete(int id)
+        {
+            try
+            {
+                sqlConnection.Open();
+                string query1 = $"Delete FROM PhoneNumber WHERE Id = 1";
+                string query = $"Delete FROM Contacts WHERE Id = 1";
+                SqlCommand sqlCommand = new SqlCommand(query1, sqlConnection);
+                SqlCommand sqlCommand2 = new SqlCommand(query, sqlConnection);
+                sqlCommand.ExecuteNonQuery();
+                sqlCommand2.ExecuteNonQuery();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);              
+                return false;
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+        }
 
         public List<Contact> GetAllContact()
         {
@@ -235,5 +300,57 @@ namespace AddressBookUsingAdo
                 sqlConnection.Close();
             }
         }
+
+
+        public bool DisplayByStoredProcedure()
+        {
+            try
+            {
+                List<Contact> list = new List<Contact>();
+                sqlConnection.Open();
+                string Query = "GetAllContact";
+                SqlCommand sqlCommand = new SqlCommand(Query, sqlConnection);
+
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                while (reader.Read())
+                {
+                    Contact contact = new Contact()
+                    {
+                        Id = (int)reader["Id"],
+                        FirstName = (string)reader["FirstName"],
+                        LastName = (string)reader["LastName"],
+                        PhoneNumber = (string)reader["PhoneNumber1"],
+                        PhoneNumber2 = (string)reader["PhoneNumber2"],
+                        Email = (string)reader["Email"],
+                        City = (string)reader["City"],
+                        Sstate = (string)reader["Sstate"],
+                        PinCode = (string)reader["PinCode"],
+                        Country = (string)reader["Country"]
+                    };
+                    list.Add(contact);
+                }
+                foreach (Contact contact in list)
+                {
+                    Console.WriteLine($"Id: {contact.Id}\t Name:- {contact.FirstName}\t LastName:- {contact.LastName}" +
+                        $"\tPhoneNumber:- {contact.PhoneNumber}  \tAlternate PhoneNumber: - {contact.PhoneNumber2} \tEmail:- {contact.Email} \tCity:- {contact.City} \tState:- {contact.Sstate} \tPinCode:- {contact.PinCode}" +
+                        $"\tCountry:- {contact.Country}");
+                }
+                sqlConnection.Close();
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                Console.WriteLine("Something went wrong");
+                return false;
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+        }
+
+        
     }
 }

@@ -13,10 +13,13 @@ namespace AddressBookUsingAdo
                 Console.WriteLine("Which Operation you want to perfrom");
                 Console.WriteLine("press 1: Add Contact ");
                 Console.WriteLine("press 2: Display Contact");
+                Console.WriteLine("press 6: DisplayByStoredProcedure");
                 Console.WriteLine("press 3: Display Contact By Id");
                 Console.WriteLine("press 4: Update Contact By First name");
                 Console.WriteLine("press 5: Delete Contact By Id");
-                
+                Console.WriteLine("press 6: Display By Stored Procedure");
+                Console.WriteLine("press 7: Add By Stroed Procedure");
+
                 Console.Write("Enter Your Choice ");
                 int Choice = int.Parse(Console.ReadLine());
                 Console.WriteLine();
@@ -93,6 +96,50 @@ namespace AddressBookUsingAdo
                             addressBookDBOperations.Delete(id);
                             break;
                         }
+                    case 6:
+                        {
+                            addressBookDBOperations.DisplayByStoredProcedure();
+                            break;
+                        }
+                    /*case 7:
+                        {
+                            *//*Console.WriteLine("Enter ID:- ");
+                            int id = int.Parse(Console.ReadLine());*//*
+                            Console.WriteLine("Enter Firstname: - ");
+                            string firstName = Console.ReadLine();
+                            Console.WriteLine("Enter LastName");
+                            string Lastname = Console.ReadLine();
+                            Console.WriteLine("Enter PhoneNumber1");
+                            string phno = Console.ReadLine();
+                            Console.WriteLine("Enter Alternate Phone Number:- ");
+                            string phno2 = Console.ReadLine();
+                            Console.WriteLine("Enter Email:- ");
+                            string email = Console.ReadLine();
+                            Console.WriteLine("Enter City:- ");
+                            string city = Console.ReadLine();
+                            Console.WriteLine("Enter Pincode:- ");
+                            string pin = Console.ReadLine();
+                            Console.WriteLine("Enter State:- ");
+                            string state = Console.ReadLine();
+                            Console.WriteLine("Enter Country:- ");
+                            string country = Console.ReadLine();
+
+                            Contact contact = new( firstName, Lastname, phno, phno2, email, city, state, pin, country)
+                            {
+                                FirstName = firstName,
+                                LastName = Lastname,
+                                PhoneNumber = phno,
+                                PhoneNumber2 = phno2,
+                                Email = email,
+                                City = city,
+                                Sstate = state,
+                                PinCode = pin,
+                                Country = country
+                            };
+                            addressBookDBOperations.AddByStroedProcedure(contact);
+                            break;
+                        }*/
+                  
                 }
             }
         }

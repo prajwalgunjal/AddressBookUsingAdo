@@ -23,9 +23,22 @@ namespace AddressBookUsingAdo
             Id = id;
             Email = email;
         }   
-        public Contact(int id, string firstName, string lastName, string phoneNumber,string phoneNumber2, string email, string city, string sstate, string pinCode, string country)
+        public Contact (int id, string firstName, string lastName, string phoneNumber,string phoneNumber2, string email, string city, string sstate, string pinCode, string country)
         {
             Id = id;
+            FirstName = firstName;
+            LastName = lastName;
+            PhoneNumber = phoneNumber;
+            PhoneNumber2 = phoneNumber2;
+            Email = email;
+            City = city;
+            Sstate = sstate;
+            PinCode = pinCode;
+            Country = country;
+
+        } 
+        public Contact( string firstName, string lastName, string phoneNumber,string phoneNumber2, string email, string city, string sstate, string pinCode, string country)
+        {
             FirstName = firstName;
             LastName = lastName;
             PhoneNumber = phoneNumber;

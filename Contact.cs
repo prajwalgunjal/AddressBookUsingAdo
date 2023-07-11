@@ -19,6 +19,10 @@ namespace AddressBookUsingAdo
         public string Country { get; set; }
         public string PhoneNumber2 { get; set; }
 
+        public Contact (int id, string email) {
+            Id = id;
+            Email = email;
+        }   
         public Contact(int id, string firstName, string lastName, string phoneNumber,string phoneNumber2, string email, string city, string sstate, string pinCode, string country)
         {
             Id = id;

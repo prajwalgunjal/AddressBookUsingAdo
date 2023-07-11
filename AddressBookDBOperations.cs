@@ -7,7 +7,7 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Data.SqlClient;
 namespace AddressBookUsingAdo
 {
     public class AddressBookDBOperations
@@ -66,7 +66,7 @@ namespace AddressBookUsingAdo
                 sqlConnection.Open();
                 string query = $"INSERT INTO Contacts VALUES (@FirstName,@LastName,@PhoneNumber,@Email,@City,@PinCode,@Country,@Sstate)";
                 SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@FirstName",contact.FirstName);
+                sqlCommand.Parameters.AddWithValue("@FirstName", contact.FirstName);
                 sqlCommand.Parameters.AddWithValue("@LastName", contact.LastName);
                 sqlCommand.Parameters.AddWithValue("@PhoneNumber", contact.PhoneNumber);
                 sqlCommand.Parameters.AddWithValue("@Email", contact.Email);
@@ -75,7 +75,6 @@ namespace AddressBookUsingAdo
                 sqlCommand.Parameters.AddWithValue("@Country", contact.Country);
                 sqlCommand.Parameters.AddWithValue("@Sstate", contact.Sstate);
                 int result = sqlCommand.ExecuteNonQuery();
-
 
                 string query2 = $"INSERT INTO PhoneNumber VALUES (@Id, @PhoneNumber2)";
                 SqlCommand sqlCommand2 = new SqlCommand(query2, sqlConnection);
@@ -105,10 +104,24 @@ namespace AddressBookUsingAdo
             }
         }
 
+        public void Delete(int id)
+        {
+            sqlConnection.Open();
+            string query1 = $"Delete FROM PhoneNumber WHERE Id = 1";
+            string query = $"Delete FROM Contacts WHERE Id = 1";
+            SqlCommand sqlCommand = new SqlCommand(query1, sqlConnection);
+            SqlCommand sqlCommand2 = new SqlCommand(query, sqlConnection);
+            //sqlCommand.ExecuteNonQuery();
+            sqlCommand2.ExecuteNonQuery();
+
+            sqlConnection.Close();
+        }
+
+
+
         public List<Contact> GetAllContact()
         {
             List<Contact> list = new List<Contact>();
-
             sqlConnection.Open();
             string query = $"SELECT * From Contacts AS c JOIN PhoneNumber As p ON c.Id = p.Id";
             SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
@@ -128,7 +141,6 @@ namespace AddressBookUsingAdo
                     Sstate = (string)reader["Sstate"],
                     PinCode = (string)reader["PinCode"],
                     Country = (string)reader["Country"]
-
                 };
                 list.Add(emp);
             }
@@ -137,11 +149,9 @@ namespace AddressBookUsingAdo
                 Console.WriteLine($"Id: {contact.Id}\t Name:- {contact.FirstName}\t LastName:- {contact.LastName}" +
                     $"\tPhoneNumber:- {contact.PhoneNumber}  \tAlternate PhoneNumber: - {contact.PhoneNumber2} \tEmail:- {contact.Email} \tCity:- {contact.City} \tState:- {contact.Sstate} \tPinCode:- {contact.PinCode}" +
                     $"\tCountry:- {contact.Country}");
-
             }
             sqlConnection.Close();
             return list;
-
         }
         public bool GetContactByID(int id)
         {
@@ -167,7 +177,6 @@ namespace AddressBookUsingAdo
                         Sstate = (string)reader["Sstate"],
                         PinCode = (string)reader["PinCode"],
                         Country = (string)reader["Country"]
-
                     };
                     list.Add(contact);
                 }
@@ -178,7 +187,7 @@ namespace AddressBookUsingAdo
                         Console.WriteLine($"Id: {contact.Id}\t Name:- {contact.FirstName}\t LastName:- {contact.LastName}" +
                             $"\tPhoneNumber:- {contact.PhoneNumber}  \tAlternate PhoneNumber: - {contact.PhoneNumber2} \tEmail:- {contact.Email} \tCity:- {contact.City} \tState:- {contact.Sstate} \tPinCode:- {contact.PinCode}" +
                             $"\tCountry:- {contact.Country}");
-                       
+
                     }
                     else
                     {
@@ -194,9 +203,37 @@ namespace AddressBookUsingAdo
             }
             finally
             {
-                sqlConnection.Close ();
+                sqlConnection.Close();
             }
         }
-    } 
-    
+
+        public bool UpdateContact(Contact contact)
+        {
+            try
+            {
+                sqlConnection.Open();
+                //string query = $"UPDATE Contacts SET Email = '{contact.Email}' WHERE Id = '{contact.Id}'";
+                string query1 = $"UPDATE Contacts SET Email = @Emailid WHERE Id = @Id";
+                SqlCommand sqlCommand = new SqlCommand(query1, sqlConnection);
+                sqlCommand.Parameters.AddWithValue("@Emailid",contact.Email);
+                sqlCommand.Parameters.AddWithValue("@Id",contact.Id);
+                int result =sqlCommand.ExecuteNonQuery();
+                if(result>0)
+                {
+                    Console.WriteLine("Data Updated...");
+                    Console.WriteLine($"{result} rows affected");
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                sqlConnection.Close();
+                return false;
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+        }
+    }
 }

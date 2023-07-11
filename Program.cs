@@ -14,6 +14,8 @@ namespace AddressBookUsingAdo
                 Console.WriteLine("press 1: Add Contact ");
                 Console.WriteLine("press 2: Display Contact");
                 Console.WriteLine("press 3: Display Contact By Id");
+                Console.WriteLine("press 4: Update Contact By First name");
+                Console.WriteLine("press 5: Delete Contact By Id");
                 
                 Console.Write("Enter Your Choice ");
                 int Choice = int.Parse(Console.ReadLine());
@@ -21,7 +23,7 @@ namespace AddressBookUsingAdo
                 switch (Choice)
                 {
                     case 1:
-                        {
+                        { 
                             Console.WriteLine("Enter ID:- ");
                             int id = int.Parse(Console.ReadLine());
                             Console.WriteLine("Enter Firstname: - ");
@@ -74,8 +76,24 @@ namespace AddressBookUsingAdo
                             Console.WriteLine();
                             break;
                         }
+                        case 4:
+                        {
+                            Console.WriteLine("Enter ID:- ");
+                            int id = int.Parse(Console.ReadLine());
+                            Console.WriteLine("Enter Updated Email id:- ");
+                            string Email = Console.ReadLine();
+                            Contact contact = new Contact(id, Email);
+                            addressBookDBOperations.UpdateContact(contact);
+                            break;
+                        }
+                    case 5:
+                        {
+                            Console.WriteLine("Enter the Id which You want to delete");
+                            int id = int.Parse(Console.ReadLine()); 
+                            addressBookDBOperations.Delete(id);
+                            break;
+                        }
                 }
-
             }
         }
     }

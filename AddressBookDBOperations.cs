@@ -106,7 +106,7 @@ namespace AddressBookUsingAdo
             }
         }
 
-        /*public bool AddByStroedProcedure(Contact contact)
+        public bool AddByStroedProcedure(Contact contact)
         {
             try
             {
@@ -146,19 +146,19 @@ namespace AddressBookUsingAdo
                     Console.WriteLine("Rollback changes ");
                 }
                 return true;
-               
+
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
                 return false;
             }
-            finally 
+            finally
             {
                 sqlConnection.Close();
             }
         }
-*/
+
 
         public bool Delete(int id)
         {

@@ -101,10 +101,10 @@ namespace AddressBookUsingAdo
                             addressBookDBOperations.DisplayByStoredProcedure();
                             break;
                         }
-                    /*case 7:
+                    case 7:
                         {
-                            *//*Console.WriteLine("Enter ID:- ");
-                            int id = int.Parse(Console.ReadLine());*//*
+                            Console.WriteLine("Enter ID:- ");
+                            int id = int.Parse(Console.ReadLine());
                             Console.WriteLine("Enter Firstname: - ");
                             string firstName = Console.ReadLine();
                             Console.WriteLine("Enter LastName");
@@ -124,7 +124,7 @@ namespace AddressBookUsingAdo
                             Console.WriteLine("Enter Country:- ");
                             string country = Console.ReadLine();
 
-                            Contact contact = new( firstName, Lastname, phno, phno2, email, city, state, pin, country)
+                            Contact contact = new(firstName, Lastname, phno, phno2, email, city, state, pin, country)
                             {
                                 FirstName = firstName,
                                 LastName = Lastname,
@@ -138,8 +138,8 @@ namespace AddressBookUsingAdo
                             };
                             addressBookDBOperations.AddByStroedProcedure(contact);
                             break;
-                        }*/
-                  
+                        }
+
                 }
             }
         }

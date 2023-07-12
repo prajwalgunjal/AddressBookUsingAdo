@@ -158,15 +158,13 @@ namespace AddressBookUsingAdo
                 sqlConnection.Close();
             }
         }
-
-
         public bool Delete(int id)
         {
             try
             {
                 sqlConnection.Open();
-                string query1 = $"Delete FROM PhoneNumber WHERE Id = 1";
-                string query = $"Delete FROM Contacts WHERE Id = 1";
+                string query1 = $"Delete FROM PhoneNumber WHERE Id = {id}";
+                string query = $"Delete FROM Contacts WHERE Id = {id}";
                 SqlCommand sqlCommand = new SqlCommand(query1, sqlConnection);
                 SqlCommand sqlCommand2 = new SqlCommand(query, sqlConnection);
                 sqlCommand.ExecuteNonQuery();
@@ -183,7 +181,6 @@ namespace AddressBookUsingAdo
                 sqlConnection.Close();
             }
         }
-
         public List<Contact> GetAllContact()
         {
             List<Contact> list = new List<Contact>();
@@ -271,7 +268,6 @@ namespace AddressBookUsingAdo
                 sqlConnection.Close();
             }
         }
-
         public bool UpdateContact(Contact contact)
         {
             try
@@ -280,10 +276,10 @@ namespace AddressBookUsingAdo
                 //string query = $"UPDATE Contacts SET Email = '{contact.Email}' WHERE Id = '{contact.Id}'";
                 string query1 = $"UPDATE Contacts SET Email = @Emailid WHERE Id = @Id";
                 SqlCommand sqlCommand = new SqlCommand(query1, sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@Emailid",contact.Email);
-                sqlCommand.Parameters.AddWithValue("@Id",contact.Id);
-                int result =sqlCommand.ExecuteNonQuery();
-                if(result>0)
+                sqlCommand.Parameters.AddWithValue("@Emailid", contact.Email);
+                sqlCommand.Parameters.AddWithValue("@Id", contact.Id);
+                int result = sqlCommand.ExecuteNonQuery();
+                if (result > 0)
                 {
                     Console.WriteLine("Data Updated...");
                     Console.WriteLine($"{result} rows affected");
@@ -300,8 +296,6 @@ namespace AddressBookUsingAdo
                 sqlConnection.Close();
             }
         }
-
-
         public bool DisplayByStoredProcedure()
         {
             try
@@ -350,7 +344,6 @@ namespace AddressBookUsingAdo
                 sqlConnection.Close();
             }
         }
-
         public bool DisplayByIDStoredProcedure(int id)
         {
             try
@@ -406,7 +399,6 @@ namespace AddressBookUsingAdo
         {
             try
             {
-                List<Contact> list = new List<Contact>();
                 sqlConnection.Open();
                 string Query = "UpdateByID";
                 SqlCommand sqlCommand = new SqlCommand(Query, sqlConnection);
@@ -427,10 +419,27 @@ namespace AddressBookUsingAdo
                 sqlConnection.Close();
             }
         }
-
-
-
-
-
+        public bool DeleteByIDStoredProcedure(int id)
+        {
+            try
+            {
+                sqlConnection.Open();
+                string Query = "DeleteContactById";
+                SqlCommand sqlCommand = new SqlCommand(Query, sqlConnection);
+                sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("@Id", id);
+                int result = sqlCommand.ExecuteNonQuery();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+        }
     }
 }

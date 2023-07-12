@@ -19,7 +19,9 @@ namespace AddressBookUsingAdo
                 Console.WriteLine("press 5: Delete Contact By Id");
                 Console.WriteLine("press 6: Display By Stored Procedure");
                 Console.WriteLine("press 7: Add By Stroed Procedure");
-
+                Console.WriteLine("press 8: Get By ID Stroed Procedure");
+                Console.WriteLine("press 9: Update By ID Stored Procedure");
+                Console.WriteLine("press 10: Delete By Stroed Procedure");
                 Console.Write("Enter Your Choice ");
                 int Choice = int.Parse(Console.ReadLine());
                 Console.WriteLine();
@@ -153,6 +155,13 @@ namespace AddressBookUsingAdo
                             Console.WriteLine("Enter Email:- ");
                             string email = Console.ReadLine();
                             addressBookDBOperations.UpdateByIDStoredProcedure(id, email);
+                            break;
+                        }
+                        case 10:
+                        {
+                            Console.WriteLine("Enter Id:- ");
+                            int id = int.Parse(Console.ReadLine());
+                            addressBookDBOperations.DeleteByIDStoredProcedure(id);
                             break;
                         }
                 }
